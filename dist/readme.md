@@ -1,7 +1,7 @@
 
-  # Brittney's Cool Generator
+  # Readme Generator
   ## Description
-  Generates Awesome Readmes
+  Quick and effective readme generator for any project.
 
 
   ## Table of Contents
@@ -15,19 +15,19 @@
   
 
   ## Description
-  Generates Awesome Readmes
+  Quick and effective readme generator for any project.
 
   ## Installation
-  node.js
+   modules with node.js
 
   ## Tests
-  no
+  none
 
   ## Usage
-  Generate Readmes
+  Create readmes for projects.
 
   ## Contributors
-  Me!
+  none
 
   ## Licenses
   Mozilla
@@ -35,5 +35,5 @@
   
   My GitHub username is bbaker1989.
   My GitHub profile: https://github.com/bbaker1989
-  To contact me for any questions, comments or concerns email me at :brittalexabake@gmail.com. 
+  To contact me for any questions, comments or concerns email me at :brittney@aol.com. 
 
