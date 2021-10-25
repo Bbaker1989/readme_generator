@@ -37,7 +37,7 @@ const userQuestions = [
 // Instillation Instructions
 {
     type: 'input',
-    name: 'instillation',
+    name: 'installation',
     message: 'Please describe the process for instillation.',
     validate: projectInstillation => {
       if (projectInstillation) {
