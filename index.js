@@ -1,10 +1,10 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
-const generateReadme = require("./utils/generateReadme");
+const { inherits } = require("util");
+const generateReadme = require("./utils/generateReadme.js");
 
 //README Prompt Questions
-const promptUser = () => {
-    return inquirer.prompt([
+const userQuestions = [
 //Prompt for title of application  for  README
 {
     type: 'input',
@@ -36,29 +36,31 @@ const promptUser = () => {
 
 // Instillation Instructions
 {
-    type: 'confirm',
-    name: 'IncludeInstillation',
-    message: 'Would you like to include instillation instructions?',
-    default: true
-  },
-  {
     type: 'input',
-    name: 'InstillationInstructions',
-    message: 'Please provide a description of the instillation process',
-    when: ({ confirmInstillation }) => confirmInstillation
+    name: 'instillation',
+    message: 'Please describe the process for instillation.',
+    validate: projectInstillation => {
+      if (projectInstillation) {
+        return true;
+      } else {
+        console.log('Please include instillation instructions.');
+        return false;
+      }
+    }
   },
 //Tests 
 {
-    type: 'confirm',
-    name: 'tests',
-    message: 'Would you like to provide any tests to be included in readme?',
-    default: true
-  },
-  {
     type: 'input',
-    name: 'includeTests',
-    message: 'Please detail any tests that will be included.',
-    when: ({ confirmTests}) => confirmTests
+    name: 'tests',
+    message: 'Are you including any tests? Please provide.',
+    validate: projectTests => {
+      if (projectTests) {
+        return true;
+      } else {
+        console.log('Please include any tests used for this project');
+        return false;
+      }
+    }
   },
 
 //Usage
@@ -78,16 +80,17 @@ const promptUser = () => {
  
 //Contributing
 {
-    type: 'confirm',
-    name: 'contributors',
-    message: 'Would you like to include any contributors',
-    default: true
-  },
-  {
     type: 'input',
-    name: 'includeContributors',
-    message: 'Who are the contributors to this project?',
-    when: ({ confirmContributors}) => confirmContributors
+    name: 'contributors',
+    message: 'Please provide any contributors to your project.',
+    validate: inputContributors => {
+      if (inputContributors) {
+        return true;
+      } else {
+        console.log('Please remember to include contributors, if any.');
+        return false;
+      }
+    }
   },
 
 //List of License for Application
@@ -116,12 +119,50 @@ const promptUser = () => {
     type: 'input',
     name: 'email',
     message: 'Please provide your email address.',
-  }
-]);
-};
+    validate: emailInput => {
+        if (emailInput) {
+          return true;
+        } else {
+          console.log('Please enter testing information for your project!');
+          return false;
+        }
+      }
+    }
+  ];
 
-//Questions
+  //function to write Readme
+  const writeFile = readmeData => {
+    return new Promise((resolve, reject) => {
+      fs.writeFile('./dist/README.md', readmeData, err => {
+    
+        if (err) {
+          reject(err);
+      
+          return;
+        }
+  
+       
+        resolve({
+          ok: true,
+          message: 'README.md file created!'
+        });
+      });
+    });
+  };
 
-//Generate Table of Contents
 
-//Generate Readme File
+//Initialize app
+function init() {
+    return inquirer.prompt(userQuestions)
+    .then (readmeData => {
+      return generateReadme(readmeData)
+    })
+    .then (readmeData => {
+      return writeFile(readmeData)
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+init();
